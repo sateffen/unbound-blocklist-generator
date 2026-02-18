@@ -1,0 +1,48 @@
+_pkgname=unbound-blocklist-generator
+pkgname=$_pkgname-git
+pkgdesc='Unbound Blocklist Generator'
+pkgver=r1.230b33d
+pkgrel=1
+depends=('unbound')
+makedepends=('go' 'make')
+arch=('x86_64' 'aarch64')
+license=('MIT')
+backup=('etc/unbound-blocklist-generator.toml')
+url='https://github.com/sateffen/unbound-blocklist-generator'
+source=('git+https://github.com/sateffen/unbound-blocklist-generator.git')
+sha256sums=('SKIP')
+
+pkgver() {
+  # see https://wiki.archlinux.org/title/VCS_package_guidelines#The_pkgver()_function
+  cd "$_pkgname"
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+}
+
+prepare() {
+  export GOPATH="$srcdir/build"
+  export GOFLAGS="-buildmode=pie -trimpath -ldflags=-linkmode=external -mod=readonly -modcacherw"
+
+  cd "$_pkgname"
+  make install-dependencies
+}
+
+build() {
+  export GOPATH="$srcdir/build"
+  # export PATH=$GOPATH/bin:$PATH
+  export CGO_CPPFLAGS="${CPPFLAGS}"
+  export CGO_CFLAGS="${CFLAGS}"
+  export CGO_CXXFLAGS="${CXXFLAGS}"
+  export CGO_LDFLAGS="${LDFLAGS}"
+  export GOFLAGS="-buildmode=pie -trimpath -ldflags=-linkmode=external -mod=readonly -modcacherw"
+
+  cd "$_pkgname"
+  make build
+}
+
+package() {
+  install -Dm755 "$srcdir/$_pkgname/dist/unbound-blocklist-generator" "$pkgdir/usr/bin/unbound-blocklist-generator"
+  install -Dm644 "$srcdir/$_pkgname/systemd/unbound-blocklist-generator.service" "$pkgdir/usr/lib/systemd/system/unbound-blocklist-generator.service"
+  install -Dm644 "$srcdir/$_pkgname/systemd/unbound-blocklist-generator.timer" "$pkgdir/usr/lib/systemd/system/unbound-blocklist-generator.timer"
+  install -Dm644 "$srcdir/$_pkgname/exampleconfig.toml" "$pkgdir/etc/unbound-blocklist-generator.toml"
+  install -Dm644 "$srcdir/$_pkgname/LICENSE" "$pkgdir/usr/share/licenses/$_pkgname/LICENSE"
+}
