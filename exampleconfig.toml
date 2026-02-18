@@ -21,4 +21,4 @@ blocklist_urls = [
 	"https://dbl.ipfire.org/lists/phishing/domains.txt",
 	"https://dbl.ipfire.org/lists/malware/domains.txt",
 ]
-max_parallel_downloads = 0 # 0 = cpu-core-count
+max_parallel_downloads = 0 # 0 = use count of cpu-cores
