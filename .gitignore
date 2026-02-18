@@ -1,0 +1,9 @@
+.*
+!.gitignore
+
+archlinux/*
+!archlinux/PKGBUILD
+
+config.toml
+blocklists/
+vendor/

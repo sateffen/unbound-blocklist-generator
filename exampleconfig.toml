@@ -1,0 +1,24 @@
+target_filename = "/etc/unbound/conf.d/unbound-blocklist.generated.conf"
+allowed_domains = [
+    "dns.mullvad.net"
+]
+blocked_domains = [
+	"su",
+	"ru",
+	"tk",
+	"box",
+	"zip",
+	"mov",
+	"top",
+]
+blocklist_urls = [
+    "https://big.oisd.nl/domainswild",
+	"https://raw.githubusercontent.com/hagezi/dns-blocklists/refs/heads/main/wildcard/spam-tlds-onlydomains.txt",
+	"https://raw.githubusercontent.com/hagezi/dns-blocklists/refs/heads/main/wildcard/pro.txt",
+	"https://raw.githubusercontent.com/hagezi/dns-blocklists/refs/heads/main/wildcard/doh.txt",
+	"https://dbl.ipfire.org/lists/ads/domains.txt",
+	"https://dbl.ipfire.org/lists/doh/domains.txt",
+	"https://dbl.ipfire.org/lists/phishing/domains.txt",
+	"https://dbl.ipfire.org/lists/malware/domains.txt",
+]
+max_parallel_downloads = 0 # 0 = cpu-core-count

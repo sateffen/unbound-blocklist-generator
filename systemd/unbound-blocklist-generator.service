@@ -1,0 +1,10 @@
+[Unit]
+Description=Update the Unbound Blocklist
+After=unbound.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/unbound-blocklist-generator /etc/unbound-blocklist-generator.toml 
+
+[Install]
+WantedBy=multi-user.target

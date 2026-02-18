@@ -1,0 +1,8 @@
+[Unit]
+Description=Run the unbound blocklist update
+
+[Timer]
+OnCalendar=*-*-* 06:00:00
+
+[Install]
+WantedBy=timers.target
