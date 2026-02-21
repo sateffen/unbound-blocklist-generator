@@ -12,6 +12,12 @@ clean:
 	@echo " > Cleaning dist folder..."
 	@rm -r dist || true
 
+## lint: Run the linter on the project
+.PHONY: lint
+lint:
+	@echo " > Running linter..."
+	@golangci-lint run
+
 ## build: Build the project
 .PHONY: build
 build: $(DISTPATH)/$(PROJECTNAME)
