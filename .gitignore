@@ -1,5 +1,6 @@
 .*
 !.gitignore
+!.devcontainer
 
 archlinux/*
 !archlinux/PKGBUILD
