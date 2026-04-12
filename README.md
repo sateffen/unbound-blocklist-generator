@@ -31,9 +31,9 @@ See [exampleconfig.toml](exampleconfig.toml) for a full example.
 | `allowed_domains` | string[] | Domains exempted from blocking |
 | `max_parallel_downloads` | int | Max concurrent downloads (0 = number of CPU cores) |
 
-> Note: `allowed_domains` is basically an allow-list that keeps certrain entries and their subdomains from the blocklist, but if a parent-domain is blocked, this won't help either - consider allowing all parent-domains if necessary.
+> Note: `allowed_domains` is basically an allow-list that keeps certain entries and their subdomains from the blocklist, but if a parent-domain is blocked, this won't help either - consider allowing all parent-domains if necessary.
 
-Additioanlly, you can set the `LOG_LEVEL` environment variable to `DEBUG`, `INFO`, `WARN`, or `ERROR` (default: `INFO`) to get more logging if necessary.
+Additionally, you can set the `LOG_LEVEL` environment variable to `DEBUG`, `INFO`, `WARN`, or `ERROR` (default: `INFO`) to get more logging if necessary.
 
 ## Building
 
@@ -45,6 +45,10 @@ make build-arm64  # cross-compile for ARM64
 ```
 
 Requires Go 1.25+ (probably works with older go-versions as well, but I developed it with 1.25, so any version below is untested).
+
+## Python Implementation
+
+There is a Python standalone implementation in *unbound-blocklist-generator.py*. That version does not rely on any configuration file or any external library, other than the Python default runtime. The output is the same, but execution is significantly slower. Nevertheless, if you can't use the Go version for whatever reason, feel free to use this Python version.
 
 ## Disclaimer
 
