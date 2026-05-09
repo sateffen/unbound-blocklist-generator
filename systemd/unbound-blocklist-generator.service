@@ -4,7 +4,51 @@ After=unbound.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/unbound-blocklist-generator /etc/unbound-blocklist-generator.toml 
+ExecStart=/usr/bin/unbound-blocklist-generator /etc/unbound-blocklist-generator.toml
+
+###
+# Additional Hardening
+###
+# Paths and Filesystem
+ProtectSystem=strict
+ReadWritePaths=/etc/unbound/conf.d
+
+# Capabilities and Syscalls
+CapabilityBoundingSet=
+AmbientCapabilities=
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources @mount
+NoNewPrivileges=yes
+
+# User and Private
+LockPersonality=yes
+PrivateUsers=yes
+PrivateTmp=yes
+PrivateDevices=yes
+PrivateMounts=yes
+
+# Protect and Proc
+ProtectClock=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+ProtectHome=yes
+ProtectHostname=yes
+ProtectProc=invisible
+ProcSubset=pid
+
+# Restrictions & More
+MemoryDenyWriteExecute=yes
+DevicePolicy=closed
+KeyringMode=private
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX AF_NETLINK
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+RemoveIPC=yes
+UMask=0077
 
 [Install]
 WantedBy=multi-user.target
