@@ -7,4 +7,5 @@ archlinux/*
 
 config.toml
 blocklists/
+dist/
 vendor/

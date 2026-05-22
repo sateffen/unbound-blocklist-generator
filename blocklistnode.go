@@ -3,14 +3,13 @@ package main
 import "bufio"
 
 type BlockListNode struct {
-	isLeaf   bool
 	children map[string]*BlockListNode
 	value    string
 }
 
 func (bln *BlockListNode) addDomain(urlParts []string) {
 	it := bln
-	for i := len(urlParts) - 1; i >= 0 && !it.isLeaf; i-- {
+	for i := len(urlParts) - 1; i >= 0 && !it.isLeaf(); i-- {
 		it = it.addChild(urlParts[i])
 	}
 
@@ -18,7 +17,7 @@ func (bln *BlockListNode) addDomain(urlParts []string) {
 }
 
 func (bln *BlockListNode) addChild(childValue string) *BlockListNode {
-	if bln.isLeaf {
+	if bln.isLeaf() {
 		return bln
 	}
 
@@ -28,7 +27,6 @@ func (bln *BlockListNode) addChild(childValue string) *BlockListNode {
 	}
 
 	newChild := &BlockListNode{
-		isLeaf:   false,
 		children: make(map[string]*BlockListNode),
 		value:    childValue,
 	}
@@ -39,7 +37,7 @@ func (bln *BlockListNode) addChild(childValue string) *BlockListNode {
 }
 
 func (bln *BlockListNode) writeToWriter(suffix string, writer *bufio.Writer) {
-	if bln.isLeaf {
+	if bln.isLeaf() {
 		writer.WriteString("  local-zone: \"")
 		writer.WriteString(bln.value)
 		if suffix != "" {
@@ -62,8 +60,9 @@ func (bln *BlockListNode) writeToWriter(suffix string, writer *bufio.Writer) {
 }
 
 func (bln *BlockListNode) makeLeaf() {
-	if !bln.isLeaf {
-		bln.isLeaf = true
-		bln.children = nil
-	}
+	bln.children = nil
+}
+
+func (bln *BlockListNode) isLeaf() bool {
+	return bln.children == nil
 }

@@ -26,7 +26,6 @@ func getLogLevel() slog.Level {
 
 func runBlocklistGeneration(conf *Config) error {
 	blockListRoot := &BlockListNode{
-		isLeaf:   false,
 		children: make(map[string]*BlockListNode),
 		value:    "",
 	}
