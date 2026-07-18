@@ -55,21 +55,22 @@ BLOCKLIST_URLS = {
 #####################
 
 class BlockListNode:
+    __slots__ = ('value', 'children')
+
     def __init__(self, value):
         self.value = value
-        self.is_leaf = False
         self.children = {}
 
     def add_domain(self, url_parts: List[str]) -> None:
         it = self
         for i in range(len(url_parts) - 1, -1, -1):
-            if it.is_leaf:
+            if it.is_leaf():
                 break
             it = it.add_child(url_parts[i])
         it.make_leaf()
 
     def add_child(self, child_value: str) -> BlockListNode:
-        if self.is_leaf:
+        if self.is_leaf():
             return self
 
         if child_value in self.children:
@@ -80,11 +81,13 @@ class BlockListNode:
         return new_child
 
     def make_leaf(self) -> None:
-        self.is_leaf = True
-        self.children.clear()
+        self.children = None
+    
+    def is_leaf(self) -> bool:
+        return self.children == None
 
     def write_to_file(self, target_file: TextIOWrapper, suffix="") -> None:
-        if self.is_leaf:
+        if self.is_leaf():
             # Write the complete domain with FQDN trailing dot
             target_file.write(f'  local-zone: "{self.value}')
             if suffix:
