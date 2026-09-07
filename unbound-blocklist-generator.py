@@ -55,10 +55,9 @@ BLOCKLIST_URLS = {
 #####################
 
 class BlockListNode:
-    __slots__ = ('value', 'children')
+    __slots__ = ('children')
 
-    def __init__(self, value):
-        self.value = value
+    def __init__(self):
         self.children = {}
 
     def add_domain(self, url_parts: List[str]) -> None:
@@ -76,7 +75,7 @@ class BlockListNode:
         if child_value in self.children:
             return self.children[child_value]
 
-        new_child = BlockListNode(child_value)
+        new_child = BlockListNode()
         self.children[child_value] = new_child
         return new_child
 
@@ -86,21 +85,21 @@ class BlockListNode:
     def is_leaf(self) -> bool:
         return self.children == None
 
-    def write_to_file(self, target_file: TextIOWrapper, suffix="") -> None:
+    def write_to_file(self, target_file: TextIOWrapper, key="", suffix="") -> None:
         if self.is_leaf():
             # Write the complete domain with FQDN trailing dot
-            target_file.write(f'  local-zone: "{self.value}')
+            target_file.write(f'  local-zone: "{key}')
             if suffix:
                 target_file.write(f'.{suffix}')
             target_file.write('." always_null\n')
             return
 
-        child_suffix = self.value
+        child_suffix = key
         if suffix:
-            child_suffix = f"{self.value}.{suffix}"
+            child_suffix = f"{key}.{suffix}"
 
-        for child in self.children.values():
-            child.write_to_file(target_file, child_suffix)
+        for key, child in self.children.items():
+            child.write_to_file(target_file, key, child_suffix)
 
 _VALID_DOMAIN = re.compile(r'^[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9_-]+)*$')
 def is_valid_domain(domain: str) -> bool:
@@ -177,7 +176,7 @@ def main() -> int:
     print("Starting unbound blocklist generation...")
 
     # Initialize blocklist root node
-    blocklist_root = BlockListNode("")
+    blocklist_root = BlockListNode()
 
     print("Adding globally blocked TLDs...")
     for domain in BLOCKED_DOMAINS:
@@ -196,7 +195,7 @@ def main() -> int:
     try:
         with open(TARGET_FILENAME, "w", encoding="utf-8", buffering=1024*1024) as f:
             f.write("server:\n")
-            blocklist_root.write_to_file(f, "")
+            blocklist_root.write_to_file(f)
         print(f"Successfully wrote blocklist to {TARGET_FILENAME}")
     except IOError as e:
         print(f"Error writing to output target file: {e}")

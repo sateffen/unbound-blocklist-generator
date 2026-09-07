@@ -3,8 +3,11 @@ package main
 import "bufio"
 
 type BlockListNode struct {
+	// NOTE:
+	// To safe memory, these nodes don't know their own value, only their parents do.
+	// That way we don't have to store the values of nodes twice, but only once. That
+	// way we can safe some memory, without losing any information.
 	children map[string]*BlockListNode
-	value    string
 }
 
 func (bln *BlockListNode) addDomain(urlParts []string) {
@@ -28,7 +31,6 @@ func (bln *BlockListNode) addChild(childValue string) *BlockListNode {
 
 	newChild := &BlockListNode{
 		children: make(map[string]*BlockListNode),
-		value:    childValue,
 	}
 
 	bln.children[childValue] = newChild
@@ -36,26 +38,25 @@ func (bln *BlockListNode) addChild(childValue string) *BlockListNode {
 	return newChild
 }
 
-func (bln *BlockListNode) writeToWriter(suffix string, writer *bufio.Writer) {
+func (bln *BlockListNode) writeToWriter(writer *bufio.Writer, value string, suffix string) {
 	if bln.isLeaf() {
 		writer.WriteString("  local-zone: \"")
-		writer.WriteString(bln.value)
+		writer.WriteString(value)
 		if suffix != "" {
 			writer.WriteByte('.')
 			writer.WriteString(suffix)
 		}
-		writer.WriteByte('.')
-		writer.WriteString("\" always_null\n")
+		writer.WriteString(".\" always_null\n")
 		return
 	}
 
-	childSuffix := bln.value
+	childSuffix := value
 	if suffix != "" {
-		childSuffix = bln.value + "." + suffix
+		childSuffix = value + "." + suffix
 	}
 
-	for _, child := range bln.children {
-		child.writeToWriter(childSuffix, writer)
+	for key, child := range bln.children {
+		child.writeToWriter(writer, key, childSuffix)
 	}
 }
 

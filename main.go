@@ -27,7 +27,6 @@ func getLogLevel() slog.Level {
 func runBlocklistGeneration(conf *Config) error {
 	blockListRoot := &BlockListNode{
 		children: make(map[string]*BlockListNode),
-		value:    "",
 	}
 
 	var blockListURLWaitGroup sync.WaitGroup
@@ -74,7 +73,7 @@ func runBlocklistGeneration(conf *Config) error {
 
 	targetFileWriter := bufio.NewWriterSize(targetFile, 1024*1024)
 	targetFileWriter.WriteString("server:\n")
-	blockListRoot.writeToWriter("", targetFileWriter)
+	blockListRoot.writeToWriter(targetFileWriter, "", "")
 
 	// before we can call unbound-control, we must flush and close the file, else unbound can't read it
 	if err = targetFileWriter.Flush(); err != nil {
