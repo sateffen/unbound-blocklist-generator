@@ -113,7 +113,7 @@ def is_valid_domain(domain: str) -> bool:
 
     # Check allowlist
     for allowed_domain in ALLOWED_DOMAINS:
-        if domain.endswith(allowed_domain):
+        if len(domain) >= len(allowed_domain) and (domain == allowed_domain or domain.endswith(f".{allowed_domain}")):
             # here we return false, because we don't want to add it to the blocklist
             return False
 

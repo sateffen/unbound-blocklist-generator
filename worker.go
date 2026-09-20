@@ -21,7 +21,7 @@ func parseURLToParts(urlString string, allowedDomains []string) ([]string, error
 	}
 
 	for _, allowedDomain := range allowedDomains {
-		if strings.HasSuffix(strippedUrl, allowedDomain) {
+		if len(strippedUrl) >= len(allowedDomain) && (strippedUrl == allowedDomain || strings.HasSuffix(strippedUrl, "."+allowedDomain)) {
 			return nil, errors.New("urlstring is allowed by global allowlist")
 		}
 	}
