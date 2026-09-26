@@ -1,6 +1,6 @@
 # Unbound Blocklist Generator
 
-A small Go tool that aggregates domain blocklists from multiple upstream sources and generates a configuration file for the [Unbound](https://nlnetlabs.nl/projects/unbound/) DNS resolver. After writing the config, it reloads Unbound automatically.
+A small tool that aggregates domain blocklists from multiple upstream sources and generates a configuration file for the [Unbound](https://nlnetlabs.nl/projects/unbound/) DNS resolver. After writing the config, it reloads Unbound automatically.
 
 ## How it works
 

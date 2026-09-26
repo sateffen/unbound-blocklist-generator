@@ -1,7 +1,7 @@
 _pkgname=unbound-blocklist-generator
 pkgname=$_pkgname-git
 pkgdesc='Unbound Blocklist Generator'
-pkgver=r1.230b33d
+pkgver=0
 pkgrel=1
 depends=('unbound')
 makedepends=('go' 'make')
@@ -9,7 +9,7 @@ arch=('x86_64' 'aarch64')
 license=('MIT')
 backup=('etc/unbound-blocklist-generator.toml')
 url='https://github.com/sateffen/unbound-blocklist-generator'
-source=('git+https://github.com/sateffen/unbound-blocklist-generator.git')
+source=('git+https://github.com/sateffen/unbound-blocklist-generator.git#branch=go-implementation')
 sha256sums=('SKIP')
 
 pkgver() {
