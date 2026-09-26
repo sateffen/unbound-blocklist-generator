@@ -21,6 +21,11 @@ pub fn run_download(url: &str, channel: SyncSender<BlockList>, allowed_domains: 
 
     curl.perform()?;
 
+    if curl.response_code()? != 200 {
+        // 22 = HTTP_ERROR -> https://docs.rs/curl-sys/0.4.89+curl-8.20.0/curl_sys/constant.CURLE_HTTP_RETURNED_ERROR.html
+        return Err(curl::Error::new(22));
+    }
+    
     curl.get_mut()
         .process_buffer(true)
         // 23 = WRITE_ERROR -> https://docs.rs/curl-sys/0.4.89+curl-8.20.0/curl_sys/constant.CURLE_WRITE_ERROR.html
