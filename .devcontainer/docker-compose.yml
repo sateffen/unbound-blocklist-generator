@@ -7,8 +7,10 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ..:/workspace:cached
-      - go-cache:/home/dev/go
+      - cargo-cache:/home/dev/.cargo
+      - rustup-cache:/home/dev/.rustup
     command: sleep infinity
 
 volumes:
-  go-cache:
+  cargo-cache:
+  rustup-cache:

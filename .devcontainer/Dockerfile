@@ -7,7 +7,7 @@ RUN pacman -Syu --noconfirm && \
 
 # Then we install the project-specific packages, so the ones we need want for development
 # Independent of the devcontainer. Finally we clear the pacman cache
-    pacman -S --noconfirm make time go golangci-lint python unbound && \
+    pacman -S --noconfirm make time rustup python unbound && \
     pacman -Sc --noconfirm && \
 
 # Finally we can prepare the "dev" user with everything we want/need
@@ -20,3 +20,5 @@ COPY --chown=root:root --chmod=755 ./startup.sh /startup.sh
 
 # And last but not least: We switch to the dev user, so the devcontainer start with our user.
 USER dev
+
+RUN rustup default stable

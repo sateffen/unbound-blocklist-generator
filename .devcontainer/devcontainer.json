@@ -10,7 +10,7 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "golang.go",
+                "rust-lang.rust-analyzer",
                 "tamasfe.even-better-toml"
             ]
         }

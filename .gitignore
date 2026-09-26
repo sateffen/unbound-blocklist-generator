@@ -7,7 +7,6 @@ archlinux/*
 
 config.toml
 blocklists/
-dist/
-vendor/
+target/
 
 unbound-blocklist.generated.conf

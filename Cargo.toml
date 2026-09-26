@@ -1,0 +1,15 @@
+[package]
+name = "unbound-blocklist-generator"
+version = "0.0.0"
+edition = "2024"
+
+[profile.release]
+codegen-units = 1
+lto = true
+
+[dependencies]
+curl = "0.4.50"
+log = { version = "0.4", features = ["std"] }
+toml = { version = "1.1.6", features = ["serde", "parse"] }
+serde = { version = "1.0", features = ["derive"] }
+rustc-hash = "2.1.3"
