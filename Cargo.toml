@@ -10,6 +10,6 @@ lto = true
 [dependencies]
 curl = "0.4"
 log = { version = "0.4", features = ["std"] }
-toml = { version = "1.1", features = ["serde", "parse"] }
+toml = { version = "1.2", features = ["serde", "parse"] }
 serde = { version = "1.0", features = ["derive"] }
 rustc-hash = "2.1"
